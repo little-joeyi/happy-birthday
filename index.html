@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>阿彎生日快樂！</title>
+    <!-- 引入超厲害的免費灑花特效套件 -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     
     <style>
@@ -65,8 +66,10 @@
 </head>
 <body>
 
+    <!-- 頂層容器 -->
     <div class="container">
         
+        <!-- 場景一：解救阿糖 -->
         <div id="scene1">
             <h1>拯救小女孩阿糖！</h1>
             <p>阿糖被困住了！阿彎快點擊按鈕累積能量救她！</p>
@@ -75,6 +78,7 @@
             <button id="clickBtn" onclick="tapRescue()">點擊解救！(<span id="count">10</span>)</button>
         </div>
 
+        <!-- 場景二：解救成功 + 灑花 -->
         <div id="scene2" class="hidden">
             <h1 style="font-size: 32px; animation: bounce 1s infinite;">🎂 阿彎，生日快樂！ 🎂</h1>
             <p>太棒了！你成功救出阿糖了！</p>
@@ -83,12 +87,11 @@
             <button onclick="goToParty()">去參加慶生派對 🎉</button>
         </div>
 
+        <!-- 場景三：快樂小派對 -->
         <div id="scene3" class="hidden">
             <h1>✨ 我們的快樂派對 ✨</h1>
             <p>阿糖和阿彎要一直快樂在一起！</p>
             <img src="party.png" alt="阿糖和阿彎的派對">
-            <br>
-            <p style="color: #666; font-size: 14px;">（可以在這裡寫下你想對阿彎說的真心話喔❤️）</p>
         </div>
 
     </div>
