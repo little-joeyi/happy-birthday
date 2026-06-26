@@ -17,6 +17,7 @@
             align-items: center;
             height: 100vh;
             overflow: hidden;
+            position: relative;
         }
 
         .container {
@@ -27,6 +28,8 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
             max-width: 90%;
             width: 400px;
+            position: relative;
+            z-index: 1;
         }
 
         img {
@@ -39,6 +42,7 @@
             margin-right: auto;
         }
 
+        /* 初始按鈕樣式 */
         button {
             background-color: #ff4d79;
             color: white;
@@ -47,13 +51,19 @@
             font-size: 18px;
             border-radius: 25px;
             cursor: pointer;
-            transition: 0.3s;
+            transition: background-color 0.3s;
             font-weight: bold;
         }
 
         button:hover {
             background-color: #ff1a53;
-            transform: scale(1.05);
+        }
+
+        /* 當按鈕開始亂跑時套用的樣式（變成絕對定位，層級比容器高） */
+        .moving-btn {
+            position: fixed;
+            z-index: 999;
+            transition: all 0.15s ease-out; /* 讓移動看起來有一點點滑動動畫，更滑稽 */
         }
 
         /* 隱藏未發生的場景 */
@@ -75,7 +85,9 @@
             <p>阿糖被困住了！阿彎快點擊按鈕累積能量救她！</p>
             <img src="./candy-trapped.png" alt="被困住的阿糖">
             <br>
-            <button id="clickBtn" onclick="tapRescue()">點擊解救！(<span id="count">10</span>)</button>
+            <div style="height: 50px;">
+                <button id="clickBtn" onclick="tapRescue()">點擊解救！(<span id="count">10</span>)</button>
+            </div>
         </div>
 
         <div id="scene2" class="hidden">
@@ -95,17 +107,44 @@
     </div>
 
     <script>
-        let clicksLeft = 10; // 需要點擊的次數
+        let clicksLeft = 10; // 依然是 10 次不變！
 
         // 點擊解救的動作
         function tapRescue() {
             clicksLeft--;
             document.getElementById('count').innerText = clicksLeft;
 
-            // 當點到 0 次時，觸發成功
             if (clicksLeft <= 0) {
+                // 通關了，把按鈕還原位置並隱藏
+                const btn = document.getElementById('clickBtn');
+                btn.classList.remove('moving-btn');
+                btn.style.left = '';
+                btn.style.top = '';
                 showSurprise();
+            } else {
+                // 還沒通關，讓按鈕在全螢幕隨機亂跑！
+                moveButtonRandomly();
             }
+        }
+
+        // 讓按鈕隨機移動到網頁任何地方的函式
+        function moveButtonRandomly() {
+            const btn = document.getElementById('clickBtn');
+            
+            // 加上會移動的 CSS 標籤
+            btn.classList.add('moving-btn');
+
+            // 計算螢幕可移動的最大寬度與高度，並扣掉按鈕自身大小，避免飛出螢幕外
+            const maxX = window.innerWidth - btn.offsetWidth - 20;
+            const maxY = window.innerHeight - btn.offsetHeight - 20;
+
+            // 隨機產生新的 X 和 Y 座標（至少離邊緣 10 像素）
+            const randomX = Math.max(10, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(10, Math.floor(Math.random() * maxY));
+
+            // 將按鈕定定位到新地方
+            btn.style.left = randomX + 'px';
+            btn.style.top = randomY + 'px';
         }
 
         // 成功畫面與灑花
